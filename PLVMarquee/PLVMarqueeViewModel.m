@@ -86,7 +86,6 @@
 	CGFloat randomX = [self.class randomDoubleFrom:0 to:rect.size.width - self.contentSize.width accuracy:2];
 	CGFloat randomY = [self.class randomDoubleFrom:20 to:rect.size.height - self.contentSize.height accuracy:2];
 	
-	
 	PLVMarquee *marquee = self.marquee;
 	NSTimeInterval marqueeDuration = marquee.fadeDuration * 2 + marquee.displayDuration;
 	if (videoDuration - currentPlaybackTime <= marqueeDuration) {
@@ -95,7 +94,7 @@
 	//NSTimeInterval availableDuration = videoDuration - marqueeDuration;
 	
 	switch (marquee.type) {
-		case PLVVodMarqueeTypeFade:{
+		case PLVMarqueeTypeFade:{
 			NSTimeInterval marqueeInterval = marquee.maxFadeInterval;
 			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastFadeDate];
@@ -105,7 +104,7 @@
 				[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:-1] forKey:nil];
 			}
 		}break;
-		case PLVVodMarqueeTypeRoll:{
+		case PLVMarqueeTypeRoll:{
 			NSTimeInterval marqueeInterval = marquee.maxRollInterval;
 			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastRollDate];
@@ -116,7 +115,7 @@
 				[self.marqueeLayer addAnimation:[self rollAnimationInRect:rect] forKey:nil];
 			}
 		}break;
-		case PLVVodMarqueeTypeRollFade:{
+		case PLVMarqueeTypeRollFade:{
 			// 滚动
 			NSTimeInterval marqueeInterval = marquee.maxRollInterval;
 			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];

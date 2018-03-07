@@ -12,42 +12,42 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, PLVVodMarqueeType) {
+typedef NS_ENUM(NSInteger, PLVMarqueeType) {
 	/// 闪现
-	PLVVodMarqueeTypeFade,
+	PLVMarqueeTypeFade,
 	/// 滚动
-	PLVVodMarqueeTypeRoll,
+	PLVMarqueeTypeRoll,
 	/// 滚动+闪现
-	PLVVodMarqueeTypeRollFade
+	PLVMarqueeTypeRollFade
 };
 
 @interface PLVMarquee : NSObject
 
 /// 跑马灯类型
-@property (nonatomic, assign) PLVVodMarqueeType type;
+@property (nonatomic, assign) PLVMarqueeType type;
 
-/// 显示时长，不包含动画时长
+/// 单次跑马灯显示时长，不包含动画时长
 @property (nonatomic, assign) NSTimeInterval displayDuration;
 
-/// 呈现动画时长
+/// 渐变动画时长
 @property (nonatomic, assign) NSTimeInterval fadeDuration;
 
-/// 闪现最大间隔
+/// 两次闪现的最大间隔时长，实际的间隔时长是取 0~maxFadeInterval 的随机值
 @property (nonatomic, assign) NSTimeInterval maxFadeInterval;
 
-/// 滚动最大间隔
+/// 两次滚动的最大间隔时长，实际的间隔时长是取 0~maxRollInterval 的随机值
 @property (nonatomic, assign) NSTimeInterval maxRollInterval;
 
-/// 内容
+/// 跑马灯内容
 @property (nonatomic, copy) NSString *content;
 
-/// 颜色
+/// 跑马灯颜色
 @property (nonatomic, strong) UIColor *color;
 
-/// 透明度
+/// 跑马灯透明度
 @property (nonatomic, assign) CGFloat alpha;
 
-/// 字体
+/// 跑马灯字体
 @property (nonatomic, strong) UIFont *font;
 
 @end

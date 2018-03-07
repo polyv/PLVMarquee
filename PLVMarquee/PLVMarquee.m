@@ -20,7 +20,7 @@
 		_content = @"我是跑马灯";
 		_maxFadeInterval = 1;
 		_maxRollInterval = 1;
-		_type = PLVVodMarqueeTypeRollFade;
+		_type = PLVMarqueeTypeRollFade;
 	}
 	return self;
 }
