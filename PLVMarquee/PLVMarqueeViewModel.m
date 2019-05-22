@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSDate *lastFadeDate;
 @property (nonatomic, strong) NSDate *lastRollDate;
+@property (nonatomic, assign) CGRect lastShowRect;
 
 @end
 
@@ -98,21 +99,31 @@
 			NSTimeInterval marqueeInterval = marquee.maxFadeInterval;
 			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastFadeDate];
-			if (!self.lastFadeDate || currentInterval > marqueeInterval) {
+            BOOL isSwitch = (rect.size.width != self.lastShowRect.size.width && self.lastShowRect.size.width > 0) ? YES: NO;
+
+			if (!self.lastFadeDate || currentInterval > marqueeInterval || isSwitch) {
 				self.lastFadeDate = [NSDate date];
+                self.lastShowRect = rect;
+                
+                [self.marqueeLayer removeAllAnimations];
 				[self setMarqueeFrame:CGRectMake(randomX, randomY, self.contentSize.width, self.contentSize.height)];
-				[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:-1] forKey:nil];
+				[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:-1] forKey:@"fade"];
 			}
 		}break;
 		case PLVMarqueeTypeRoll:{
 			NSTimeInterval marqueeInterval = marquee.maxRollInterval;
 			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastRollDate];
-			if (!self.lastRollDate || currentInterval > marqueeInterval) {
+            BOOL isSwitch = (rect.size.width != self.lastShowRect.size.width && self.lastShowRect.size.width > 0) ? YES: NO;
+            
+			if (!self.lastRollDate || currentInterval > marqueeInterval || isSwitch) {
 				self.lastRollDate = [NSDate date];
-				[self setMarqueeFrame:CGRectMake(rect.size.width, randomY, self.contentSize.width, self.contentSize.height)];
-				[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:-1] forKey:nil];
-				[self.marqueeLayer addAnimation:[self rollAnimationInRect:rect] forKey:nil];
+                self.lastShowRect = rect;
+                
+                [self.marqueeLayer removeAllAnimations];
+                [self setMarqueeFrame:CGRectMake(rect.size.width, randomY, self.contentSize.width, self.contentSize.height)];
+                [self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:-1] forKey:@"fade"];
+                [self.marqueeLayer addAnimation:[self rollAnimationInRect:rect] forKey:@"role"];
 			}
 		}break;
 		case PLVMarqueeTypeRollFade:{
@@ -120,11 +131,16 @@
 			NSTimeInterval marqueeInterval = marquee.maxRollInterval;
 			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastRollDate];
-			if (!self.lastRollDate || currentInterval > marqueeInterval) {
+            BOOL isSwitch = (rect.size.width != self.lastShowRect.size.width && self.lastShowRect.size.width > 0) ? YES: NO;
+
+			if (!self.lastRollDate || currentInterval > marqueeInterval || isSwitch) {
 				self.lastRollDate = [NSDate date];
+                self.lastShowRect = rect;
+                
+                [self.marqueeLayer removeAnimationForKey:@"role"];
 				[self setMarqueeFrame:CGRectMake(rect.size.width, randomY, self.contentSize.width, self.contentSize.height)];
 				//[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:-1] forKey:nil];
-				[self.marqueeLayer addAnimation:[self rollAnimationInRect:rect] forKey:nil];
+				[self.marqueeLayer addAnimation:[self rollAnimationInRect:rect] forKey:@"roll"];
 			}
 			
 			// 闪现时长
@@ -136,7 +152,7 @@
 			NSTimeInterval currentFadeInterval = [[NSDate date] timeIntervalSinceDate:self.lastFadeDate];
 			if (!self.lastFadeDate || currentFadeInterval > fadeMarqueeInterval) {
 				self.lastFadeDate = [NSDate date];
-				[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:fadeDisplayDuration] forKey:nil];
+				[self.marqueeLayer addAnimation:[self fadeAnimationWithDisplayDuration:fadeDisplayDuration] forKey:@"fade"];
 			}
 		}break;
 		default:{}break;
