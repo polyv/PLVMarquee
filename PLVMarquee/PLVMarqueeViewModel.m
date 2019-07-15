@@ -45,6 +45,7 @@
 	textLayer.contentsScale = [UIScreen mainScreen].scale;
 	textLayer.opacity = 0;
 	self.marqueeLayer = textLayer;
+    self.marqueeLayer.masksToBounds = YES;
 }
 
 - (void)setMarqueeFrame:(CGRect)frame {
@@ -97,8 +98,12 @@
 	switch (marquee.type) {
 		case PLVMarqueeTypeFade:{
 			NSTimeInterval marqueeInterval = marquee.maxFadeInterval;
-			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
-			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastFadeDate];
+            if (!self.marquee.timeIntervalConstant) {
+                marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
+            }else{
+                marqueeInterval = marqueeDuration + marqueeInterval;
+            }
+            NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastFadeDate];
             BOOL isSwitch = (rect.size.width != self.lastShowRect.size.width && self.lastShowRect.size.width > 0) ? YES: NO;
 
 			if (!self.lastFadeDate || currentInterval > marqueeInterval || isSwitch) {
@@ -112,7 +117,11 @@
 		}break;
 		case PLVMarqueeTypeRoll:{
 			NSTimeInterval marqueeInterval = marquee.maxRollInterval;
-			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
+            if (!self.marquee.timeIntervalConstant) {
+                marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
+            }else{
+                marqueeInterval = marqueeDuration + marqueeInterval;
+            }
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastRollDate];
             BOOL isSwitch = (rect.size.width != self.lastShowRect.size.width && self.lastShowRect.size.width > 0) ? YES: NO;
             
@@ -127,9 +136,13 @@
 			}
 		}break;
 		case PLVMarqueeTypeRollFade:{
-			// 滚动
+			// 滚动间隔
 			NSTimeInterval marqueeInterval = marquee.maxRollInterval;
-			marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
+            if (!self.marquee.timeIntervalConstant) {
+                marqueeInterval = [self.class randomDoubleFrom:marqueeDuration to:marqueeDuration + marqueeInterval accuracy:2];
+            }else{
+                marqueeInterval = marqueeDuration + marqueeInterval;
+            }
 			NSTimeInterval currentInterval = [[NSDate date] timeIntervalSinceDate:self.lastRollDate];
             BOOL isSwitch = (rect.size.width != self.lastShowRect.size.width && self.lastShowRect.size.width > 0) ? YES: NO;
 

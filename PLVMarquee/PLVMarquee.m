@@ -14,12 +14,14 @@
 	if (self = [super init]) {
 		_fadeDuration = 0.5;
 		_displayDuration = 8.0;
+        _maxFadeInterval = 1;
+        _maxRollInterval = 1;
+        
 		_alpha = 1;
 		_color = [UIColor whiteColor];
 		_font = [UIFont systemFontOfSize:16];
+        
 		_content = @"我是跑马灯";
-		_maxFadeInterval = 1;
-		_maxRollInterval = 1;
 		_type = PLVMarqueeTypeRollFade;
 	}
 	return self;
