@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PLVMarquee"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "iOS 防录屏跑马灯组件"
   s.description  = <<-DESC
   PLVMarquee
